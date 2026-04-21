@@ -102,7 +102,53 @@ kubectl delete rc <name>
 ```
  
 ---
- 
+
+### NameSpaces
+####  Commonly Used 
+
+```bash
+# List all namespaces
+kubectl get namespaces
+kubectl get ns                          # short alias
+
+# Create a namespace
+kubectl create namespace namespace-1
+kubectl create ns namespace-1           # short alias
+
+# Delete a namespace (deletes EVERYTHING inside it)
+kubectl delete namespace namespace-1
+
+# Describe a namespace
+kubectl describe namespace namespace-1
+```
+
+#### Working inside a namespace
+```bash
+# The -n flag targets a specific namespace
+kubectl get pods -n namespace-1
+kubectl get deployments -n namespace-1
+kubectl get services -n namespace-1
+kubectl get all -n namespace-1          # everything in ns
+
+# See resources across ALL namespaces
+kubectl get pods --all-namespaces
+kubectl get pods -A                    # short alias
+
+# exec into a pod in a specific namespace
+kubectl exec -it pod-name -n namespace-1 -- sh
+
+```
+#### Set default namespace for current context
+```bash 
+kubectl config set-context --current \
+  --namespace=namespace-1
+
+# Now kubectl get pods finds pods in namespace-1 without -n
+
+# Check what your current context is
+kubectl config get-contexts
+kubectl config current-context
+```
 ### Declarative (File-based) — The Professional Way
  
 ```bash
