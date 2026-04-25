@@ -162,8 +162,61 @@ kubectl apply -f deployment.yaml -f service.yaml
 kubectl delete -f deployment.yaml
 kubectl delete -f deployment.yaml -f service.yaml
 ```
- 
----
+
+
+### DaemonSet
+A DaemonSet ensures that a copy of a pod runs on every node (or a subset of nodes) in your cluster. When you add new nodes, the DaemonSet automatically adds the pod to them. When you remove nodes, the pods are garbage collected.
+#### Example use cases: 
+```bash
+1. logging
+2. Monitoring
+3. Networking
+4. Storage
+```
+#### yaml
+```bash
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx-ds
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+```
+## Quick Commands
+
+```bash
+# List DaemonSets
+kubectl get ds
+kubectl get daemonset
+
+# Detailed info
+kubectl describe ds <name>
+
+# Pods per node
+kubectl get pods -o wide | grep <ds-name>
+
+# Update image
+kubectl set image ds/<name> <container>=<new-image>
+
+# Check rollout status
+kubectl rollout status ds/<name>
+
+# Rollback
+kubectl rollout undo ds/<name>
+
+# Delete
+kubectl delete ds <name> --cascade=false(if we dont want to delete the pods)
+``` 
  
 ##  kubectl run vs create deployment vs apply
  
